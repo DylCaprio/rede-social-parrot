@@ -7,8 +7,8 @@ import cors from 'cors'
 import {debug} from "debug"
 
 import { CommonRoutesConfig } from '../../../adapters/apis/routes/common.routes.config';
-import { UsersRoutes } from '../../../adapters/apis/routes/users.routes.config';
-import { PostsRoutes } from '../../../adapters/apis/routes/posts.routes.config';
+// import { UsersRoutes } from '../../../adapters/apis/routes/users.routes.config';
+// import { PostsRoutes } from '../../../adapters/apis/routes/posts.routes.config';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -35,8 +35,8 @@ if(!process.env.DEBUG) {
 
 app.use(expressWinston.logger(loggerOptions));
 
-routes.push(new UsersRoutes(app));
-routes.push(new PostsRoutes(app));
+// routes.push(new UsersRoutes(app));
+// routes.push(new PostsRoutes(app));
 
 const runningMessage = `Servidor rodando na porta ${port}`;
 app.get('/', (req: express.Request, res: express.Response) => {
