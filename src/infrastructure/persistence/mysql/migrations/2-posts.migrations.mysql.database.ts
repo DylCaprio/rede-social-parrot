@@ -11,7 +11,7 @@ export default {
       content: Sequelize.DataTypes.TEXT,
       createdAt: Sequelize.DataTypes.DATE,
       updatedAt: Sequelize.DataTypes.DATE,
-      iduser: {
+      user_id: {
         type: Sequelize.DataTypes.INTEGER,
         references: {
           model: {
