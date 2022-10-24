@@ -7,8 +7,8 @@ class ListUserUseCase implements IUseCase {
   constructor(private _repository: IUsersRepository) {}
 
   async execute(): Promise<IUserEntity[] | undefined> {
-    return await this._repository.list();
+    return await this._repository.list()
   }
 }
 
-export default new ListUserUseCase(UsersRepository);
+export default new ListUserUseCase(UsersRepository)
