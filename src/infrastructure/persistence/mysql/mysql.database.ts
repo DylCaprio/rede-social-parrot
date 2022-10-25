@@ -72,11 +72,12 @@ export class MysqlDatabase implements IDatabaseModel {
       timestamps: true,
     });
   }
-  //TODO entender melhor
-  async selectQuery(sql: string, replacements?: Sequelize.BindOrReplacements) {
-    return await this._adapter.query(sql, {
-      type: Sequelize.QueryTypes.SELECT,
-      replacements: replacements,
-    });
+  
+  login(model: Sequelize.ModelCtor<Sequelize.Model<any, any>>, data: object): any {
+    try {
+      return model.findOne(data)
+    } catch (err) {
+      throw new Error((err as Error).message)
+    }
   }
 }

@@ -1,9 +1,10 @@
-import * as Sequelize from "sequelize";
-import { IDatabaseModel } from "../../infrastructure/persistence/databasemodel.interface";
-import { IUserEntity } from "../../domain/entities/users/user.entity";
-import { MysqlDatabase } from "../../infrastructure/persistence/mysql/mysql.database";
-import { IUsersRepository } from "../../domain/repositories/users.repository.interface";
-import usersModel from "../../infrastructure/persistence/mysql/models/users.models.mysql.database";
+import * as Sequelize from "sequelize"
+import { IDatabaseModel } from "../../infrastructure/persistence/databasemodel.interface"
+import { IUserEntity } from "../../domain/entities/users/user.entity"
+import { MysqlDatabase } from "../../infrastructure/persistence/mysql/mysql.database"
+import { IUsersRepository } from "../../domain/repositories/users.repository.interface"
+import usersModel from "../../infrastructure/persistence/mysql/models/users.models.mysql.database"
+import passwordCryptoUsersHelper from "../helpers/password.crypto.users.helper"
 
 export class UsersRepository implements IUsersRepository {
   constructor(private _database: IDatabaseModel, private _modelUsers: Sequelize.ModelCtor<Sequelize.Model<any, any>>) {}
@@ -17,13 +18,13 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async create(resource: IUserEntity): Promise<IUserEntity> {
-    const user = resource;
-
-    const userModel = await this._database.create(this._modelUsers, user);
-
-    resource.iduser = userModel.null;
-
-    return resource;
+    try {
+      resource.password = passwordCryptoUsersHelper(resource.password);
+      const newUser = await this._database.create(this._modelUsers, resource);
+      return resource;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
   }
 
   async deleteById(resourceId: number): Promise<void> {
@@ -43,6 +44,12 @@ export class UsersRepository implements IUsersRepository {
     await this._database.update(userModel, user);
 
     return resource;
+  }
+
+  async login(resource: IUserEntity): Promise<any> {
+    const user = resource
+    const userLogin = await this._database.login(this._modelUsers, user)
+    return userLogin
   }
 }
 

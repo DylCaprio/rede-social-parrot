@@ -1,8 +1,8 @@
 export interface IUserEntity {
   iduser?: number,
-  name: string,
+  name?: string,
   email: string,
-  apartment: number,
+  apartment?: number,
   password: string,
   createdAt?: Date,
   updatedAt?: Date

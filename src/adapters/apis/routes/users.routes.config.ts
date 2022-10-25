@@ -1,12 +1,10 @@
-import { CommonRoutesConfig } from "./common.routes.config";
-import UsersController from "../controllers/users.controller";
-import UsersMiddleware from "../middlewares/users.middleware";
-// import AuthController from "../controllers/auth.controller"
-// import AuthMiddleware from "../middlewares/auth.middleware"
-import express from "express";
-import usersMiddleware from "../middlewares/users.middleware";
-import usersController from "../controllers/users.controller";
-import postsController from "../controllers/posts.controller";
+import express from "express"
+import { CommonRoutesConfig } from "./common.routes.config"
+import usersController from "../controllers/users.controller"
+import usersMiddleware from "../middlewares/users.middleware"
+import postsController from "../controllers/posts.controller"
+import loginController from "../controllers/login.controller"
+import loginMiddleware from "../middlewares/login.middleware"
 
 export class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -16,26 +14,25 @@ export class UsersRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application {
     this.app
       .route(`/users`)
-      .get(UsersController.listUsers)
+      .get(usersController.listUsers)
       .post(
-        UsersMiddleware.validateRequiredUserBodyFields,
-        UsersMiddleware.validateUserRepeated,
-        UsersController.createUser
+        usersMiddleware.validateRequiredUserBodyFields,
+        usersMiddleware.validateUserRepeated,
+        usersController.createUser
       );
 
     this.app
       .route(`/users/:iduser`)
-      .all(UsersMiddleware.validateUserExists)
-      .get(UsersController.getUserById)
-      .put(UsersMiddleware.validateRequiredUserBodyFields, UsersController.updateUser) //TODO conferir delete
-      .delete(UsersController.removeUser);
+      .all(usersMiddleware.validateUserExists)
+      .get(usersController.getUserById)
+      .put(usersMiddleware.validateRequiredUserBodyFields, usersController.updateUser)
+      .delete(usersController.removeUser);
 
     this.app.route(`/users/:iduser/posts`).get(usersMiddleware.validateUserExists, postsController.listPostsByUser );
 
-    // this.app.route(`/login`).post(
-    //   UsersMiddleware.validateUserExists, AuthMiddleware.validateRequiredLoginBodyFields, AuthController.loginUser
-    // )
-    //TODO middleware e controller login
+    this.app.route(`/login`).post(
+      loginMiddleware.validateEmail, loginMiddleware.validatePassword, loginController.login
+    )
     return this.app;
   }
 }

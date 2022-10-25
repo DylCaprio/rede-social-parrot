@@ -1,14 +1,22 @@
-import express from "express";
-import readUserUsecase from "../../../domain/usecases/users/read.user.usecase";
-import debug from "debug";
+import express from "express"
+import jwt, { JwtPayload } from 'jsonwebtoken'
+import debug from "debug"
+import bcrypt from 'bcrypt'
 import logger from "../../../infrastructure/logs/winston.logs"
-import constantsConfig from "../../../infrastructure/config/constants.config";
+import readUserUsecase from "../../../domain/usecases/users/read.user.usecase"
+import loginUserUsecase from "../../../domain/usecases/users/login.user.usecase"
+import constantsConfig from "../../../infrastructure/config/constants.config"
 
-const log: debug.IDebugger = debug("app:users-middleware");
+const log: debug.IDebugger = debug("app:users-middleware")
+
+export interface CustomRequest extends Request {
+  token: string | JwtPayload
+}
 
 class UsersMiddleware {
   async validateRequiredUserBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (req.body.name && req.body.email && req.body.password && req.body.apartment !== null) {//TODO rever
+    if (req.body.name && req.body.email && req.body.password && req.body.apartment !== null) {
+      //TODO rever
       next();
     } else {
       res.status(400).send({ error: constantsConfig.USERS.MESSAGES.ERROR.VOID_BODY });
@@ -31,7 +39,7 @@ class UsersMiddleware {
   }
 
   async validateUserRepeated(req: express.Request, res: express.Response, next: express.NextFunction) {
-    let resourceID: number = req.body.iduser;
+    let resourceID: number = req.body.iduser; //TODO teria que ser pelo email
     const user = await readUserUsecase.execute({
       iduser: resourceID,
     });
@@ -41,6 +49,23 @@ class UsersMiddleware {
       res.status(409).send({
         error: constantsConfig.USERS.MESSAGES.ERROR.USER_ALREADY_EXISTS.replace("{USER_ID}", String(resourceID)),
       });
+    }
+  }
+
+  async validatePassword(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      const user = await loginUserUsecase.execute(req.body.email);
+
+      if (!user) {
+        return res.status(401).send("E-mail ou senha inválido, verifique e tente novamente");
+      }
+
+      if (!bcrypt.compareSync(req.body.password, user.password)) {
+        return res.status(401).send("E-mail ou senha inválido, verifique e tente novamente");
+      }
+      next();
+    } catch (err) {
+      return res.status(500)
     }
   }
 }
