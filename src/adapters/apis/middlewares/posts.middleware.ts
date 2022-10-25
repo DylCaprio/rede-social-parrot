@@ -8,7 +8,7 @@ const log: debug.IDebugger = debug("app:posts-middleware");
 
 class PostsMiddleware {
   async validateRequiredPostBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (req.body) {
+    if (req.body.content !== null && req.body.content !== "") {
       //TODO rever
       next();
     } else {

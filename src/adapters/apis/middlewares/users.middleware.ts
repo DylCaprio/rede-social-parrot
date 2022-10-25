@@ -8,7 +8,7 @@ const log: debug.IDebugger = debug("app:users-middleware");
 
 class UsersMiddleware {
   async validateRequiredUserBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (req.body) {//TODO rever
+    if (req.body.name && req.body.email && req.body.password && req.body.apartment !== null) {//TODO rever
       next();
     } else {
       res.status(400).send({ error: constantsConfig.USERS.MESSAGES.ERROR.VOID_BODY });
