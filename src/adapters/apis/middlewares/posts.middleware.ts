@@ -24,7 +24,7 @@ class PostsMiddleware {
       logger.info(["Publicação encontrada: ", post]);
       next();
     } else {
-      logger.error(`Publicação ${req.params.postId} não existe`);
+      logger.error(`Publicação ${req.params.idpost} não existe`);
       res.status(404).send({
         error: constantsConfig.POSTS.MESSAGES.ERROR.POST_NOT_EXISTS.replace("{POST_ID}", req.params.idpost),
       });

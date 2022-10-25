@@ -23,9 +23,9 @@ class UsersMiddleware {
       logger.info(["Usuário encontrado: ", user]);
       next();
     } else {
-      logger.error(`Usuário ${req.params.userId} não existe`);
+      logger.error(`Usuário ${req.params.iduser} não existe`);
       res.status(404).send({
-        error: constantsConfig.USERS.MESSAGES.ERROR.USER_NOT_EXISTS.replace("{USER_ID}", req.params.userId),
+        error: constantsConfig.USERS.MESSAGES.ERROR.USER_NOT_EXISTS.replace("{USER_ID}", req.params.iduser),
       });
     }
   }
