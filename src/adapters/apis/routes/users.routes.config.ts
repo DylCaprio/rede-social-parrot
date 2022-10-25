@@ -1,13 +1,16 @@
-import { CommonRoutesConfig } from "./common.routes.config"
-import UsersController from "../controllers/users.controller"
-import UsersMiddleware from "../middlewares/users.middleware"
+import { CommonRoutesConfig } from "./common.routes.config";
+import UsersController from "../controllers/users.controller";
+import UsersMiddleware from "../middlewares/users.middleware";
 // import AuthController from "../controllers/auth.controller"
 // import AuthMiddleware from "../middlewares/auth.middleware"
-import express from "express"
+import express from "express";
+import usersMiddleware from "../middlewares/users.middleware";
+import usersController from "../controllers/users.controller";
+import postsController from "../controllers/posts.controller";
 
 export class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
-    super(app, "UsersRoutes")
+    super(app, "UsersRoutes");
   }
 
   configureRoutes(): express.Application {
@@ -18,14 +21,16 @@ export class UsersRoutes extends CommonRoutesConfig {
         UsersMiddleware.validateRequiredUserBodyFields,
         UsersMiddleware.validateUserRepeated,
         UsersController.createUser
-      )
+      );
 
     this.app
-      .route(`/users/:userId`)
+      .route(`/users/:iduser`)
       .all(UsersMiddleware.validateUserExists)
       .get(UsersController.getUserById)
       .put(UsersMiddleware.validateRequiredUserBodyFields, UsersController.updateUser) //TODO conferir delete
-      .delete(UsersController.removeUser)
+      .delete(UsersController.removeUser);
+
+    this.app.route(`/users/:iduser/posts`).get(usersMiddleware.validateUserExists, postsController.listPostsByUser );
 
     // this.app.route(`/login`).post(
     //   UsersMiddleware.validateUserExists, AuthMiddleware.validateRequiredLoginBodyFields, AuthController.loginUser

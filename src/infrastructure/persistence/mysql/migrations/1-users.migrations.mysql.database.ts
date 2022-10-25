@@ -3,7 +3,7 @@ import * as Sequelize from "sequelize";
 export default {
   up: (queryInterface: Sequelize.QueryInterface) => {
     return queryInterface.createTable("users", {
-      indexId: {
+      iduser: {
         type: Sequelize.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,

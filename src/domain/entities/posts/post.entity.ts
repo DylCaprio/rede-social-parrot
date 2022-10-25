@@ -1,5 +1,5 @@
 export interface IPostEntity {
-  idpost: number,
+  idpost?: number,
   content: string,
   createdAt?: Date,
   updatedAt?: Date,

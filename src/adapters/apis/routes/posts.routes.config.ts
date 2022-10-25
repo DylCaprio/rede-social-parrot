@@ -14,12 +14,11 @@ export class PostsRoutes extends CommonRoutesConfig {
       .get(PostsController.listPosts)
       .post(
         PostsMiddleware.validateRequiredPostBodyFields,
-        PostsMiddleware.validatePostExists,
         PostsController.createPost
       );
 
     this.app
-      .route(`/posts/:postId`)
+      .route(`/posts/:idpost`)
       .all(PostsMiddleware.validatePostExists)
       .get(PostsController.getPostById)
       .put(PostsMiddleware.validateRequiredPostBodyFields, PostsController.updatePost) //TODO conferir delete

@@ -16,7 +16,7 @@ class PostsController {
 
   async getPostById(req: express.Request, res: express.Response) {
     const post = await readPostUsecase.execute({
-      idpost: Number(req.params.ispost),
+      idpost: Number(req.params.idpost),
     });
     res.status(200).send(post);
   }
@@ -34,9 +34,13 @@ class PostsController {
 
   async removePost(req: express.Request, res: express.Response) {
     const post = await deletePostUsecase.execute({
-      idpost: Number(req.params.ispost),
+      idpost: Number(req.params.idpost),
     });
     res.status(204).send();
+  }
+
+  async listPostsByUser(req: express.Request, res: express.Response) {
+    //TODO
   }
 }
 

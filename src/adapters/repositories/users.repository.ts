@@ -27,7 +27,7 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async deleteById(resourceId: number): Promise<void> {
-    await this._database.delete(this._modelUsers, { indexId: resourceId });
+    await this._database.delete(this._modelUsers, { iduser: resourceId });
   }
 
   async list(): Promise<IUserEntity[]> {

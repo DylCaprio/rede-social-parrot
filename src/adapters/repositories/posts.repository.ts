@@ -24,7 +24,7 @@ export class PostsRepository implements IPostsRepository {
   }
 
   async deleteById(resourceId: number): Promise<void> {
-    await this._database.delete(this._modelPosts, { indexId: resourceId });
+    await this._database.delete(this._modelPosts, { idpost: resourceId });
   }
 
   async list(): Promise<IPostEntity[]> {

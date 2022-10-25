@@ -5,6 +5,7 @@ export default MysqlDatabase.getInstance().createModel("posts", {
   idpost: {
     type: Sequelize.DataTypes.INTEGER,
     primaryKey: true,
+    field: "idpost"
   },
   content: Sequelize.DataTypes.TEXT,
 });
