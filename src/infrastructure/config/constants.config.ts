@@ -12,8 +12,15 @@ export default {
   POSTS: {
     MESSAGES: {
       ERROR: {
-        VOID_BODY: `Você deve preencher o campo de conteúdo da publicação`,
-        POST_NOT_EXISTS: `Publicação {POST_ID} não existe`,
+        VOID_BODY: `Você deve preencher o campo de conteúdo da publicação.`,
+        POST_NOT_EXISTS: `Publicação {POST_ID} não existe.`,
+      },
+    },
+  },
+  LOGIN: {
+    MESSAGES: {
+      ERROR: {
+        USER_NOT_EXISTS: "E-mail ou senha incorretos.",
       },
     },
   },

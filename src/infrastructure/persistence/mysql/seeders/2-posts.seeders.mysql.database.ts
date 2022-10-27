@@ -8,7 +8,7 @@ export default {
         "content": "Amo nosso condo!",
         "createdAt": new Date(),
         "updatedAt": new Date(),
-        "user_id": "1",
+        "iduser": "1",
       }      
     ]);
   },

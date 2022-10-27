@@ -6,7 +6,7 @@ import readUserUsecase from "../../../domain/usecases/users/read.user.usecase"
 import updateUserUsecase from "../../../domain/usecases/users/update.user.usecase"
 import deleteUserUsecase from "../../../domain/usecases/users/delete.user.usecase"
 import listUserUsecase from "../../../domain/usecases/users/list.user.usecase"
-import tokenLoginUsersHelper from "../../helpers/token.login.users.helper"
+import { getErrorMessage } from "../../helpers/errors.helper"
 
 const log: debug.IDebugger = debug("app:users-controller")
 
@@ -35,10 +35,15 @@ class UsersController {
   }
 
   async removeUser(req: express.Request, res: express.Response) {
-    const user = await deleteUserUsecase.execute({
-      iduser: Number(req.params.iduser),
-    });
-    res.status(204).send()
+    try {
+      await deleteUserUsecase.execute({
+        iduser: Number(req.params.iduser)
+      })
+
+      return res.status(204).send()
+    } catch (error) {
+      return res.status(500).send(getErrorMessage(error));
+    }
   }
 }
 

@@ -3,5 +3,5 @@ export interface IPostEntity {
   content: string,
   createdAt?: Date,
   updatedAt?: Date,
-  user_id: number
+  iduser: number
 }

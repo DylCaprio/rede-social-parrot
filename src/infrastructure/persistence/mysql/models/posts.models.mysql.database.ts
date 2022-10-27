@@ -1,5 +1,5 @@
-import { MysqlDatabase } from "../mysql.database";
-import * as Sequelize from "sequelize";
+import { MysqlDatabase } from "../mysql.database"
+import * as Sequelize from "sequelize"
 
 export default MysqlDatabase.getInstance().createModel("posts", {
   idpost: {
@@ -7,6 +7,9 @@ export default MysqlDatabase.getInstance().createModel("posts", {
     primaryKey: true,
     field: "idpost"
   },
+  iduser: {
+    type: Sequelize.DataTypes.INTEGER,
+    field: "iduser" //FIXME
+  },
   content: Sequelize.DataTypes.TEXT,
 });
-//?? não precisa da foreignkey?
