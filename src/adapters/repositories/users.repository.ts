@@ -18,6 +18,7 @@ export class UsersRepository implements IUsersRepository {
     try {
       const {person} = entityToModelUsersMysql(resource)
       const newUser = await this._database.create(this._modelUsers, person)
+      newUser.iduser = newUser.null
       return newUser
     } catch (error) {
       throw new Error((error as Error).message)

@@ -14,7 +14,7 @@ export class PostsRepository implements IPostsRepository {
   async create(resource: IPostEntity): Promise<IPostEntity> {
     const { Post } = entityToModelPostsMysql(resource)
     const postModel = await this._database.create(this._modelPosts, Post)
-    //post.idpost = postModel.null
+    postModel.idpost = postModel.null
     return postModel
   }
 
