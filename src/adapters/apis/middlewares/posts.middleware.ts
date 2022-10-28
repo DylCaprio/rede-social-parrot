@@ -22,6 +22,14 @@ class PostsMiddleware {
     }),
   })
 
+  validateUpdate = validate({
+    body: Joi.object({
+      iduser: Joi.number().required(),
+      idpost: Joi.number().required(),
+      content: Joi.string().required()
+    })
+  })
+
   async validateRequiredPostBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
     if (req.body && req.body.iduser !== undefined) {
       next()

@@ -7,7 +7,7 @@ import authMiddleware from "../middlewares/auth.middleware"
 
 export class PostsRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
-    super(app, "PostsRoutes");
+    super(app, "PostsRoutes")
   }
 
   configureRoutes(): express.Application {
@@ -21,13 +21,13 @@ export class PostsRoutes extends CommonRoutesConfig {
       .route(`/posts/:idpost`)
       .all(authMiddleware.checkAuth, postsMiddleware.validateReadById, postsMiddleware.validatePostExists)
       .get(postsController.getPostById)
-      .put(postsMiddleware.validateRequiredPostBodyFields, postsController.updatePost)
+      .put(postsMiddleware.validateRequiredPostBodyFields, postsMiddleware.validateUpdate, postsController.updatePost)
       .delete(postsMiddleware.validatePostExists, postsController.removePost)
-    
+
     this.app.route(`/posts/users/:iduser`).all(authMiddleware.checkAuth).get(postsController.listPostsByIdUser)
 
     this.app.use(authMiddleware.validateError)
-    
-    return this.app;
+
+    return this.app
   }
 }
