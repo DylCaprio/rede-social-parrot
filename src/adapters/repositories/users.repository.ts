@@ -7,16 +7,14 @@ import { IUsersRepository } from "../../domain/repositories/users.repository.int
 import usersModel from "../../infrastructure/persistence/mysql/models/users.models.mysql.database"
 import entityToModelUsersMysql from "../../infrastructure/persistence/mysql/helpers/users/entityToModel.users.mysql"
 import modelToEntityUsersMysql from "../../infrastructure/persistence/mysql/helpers/users/modelToEntity.users.mysql"
+import bcrypt from "bcrypt"
 
 export class UsersRepository implements IUsersRepository {
-  constructor(
-    private _database: IDatabaseModel,
-    private _modelUsers: Sequelize.ModelCtor<Sequelize.Model<any, any>>,
-  ) { }
-  
+  constructor(private _database: IDatabaseModel, private _modelUsers: Sequelize.ModelCtor<Sequelize.Model<any, any>>) {}
+
   async create(resource: IUserEntity): Promise<IUserEntity> {
     try {
-      const {person} = entityToModelUsersMysql(resource)
+      const { person } = entityToModelUsersMysql(resource)
       const newUser = await this._database.create(this._modelUsers, person)
       newUser.iduser = newUser.null
       return newUser
@@ -54,15 +52,17 @@ export class UsersRepository implements IUsersRepository {
     try {
       const user = await this._database.readByWhere(this._modelUsers, {
         email,
-        password
       })
-
-      return modelToEntityUsersMysql(user)
+      if (user) {
+        let isMatch = bcrypt.compareSync(password, user.password)
+        if (isMatch) {
+          return modelToEntityUsersMysql(user)
+        }
+      }
     } catch (err) {
       throw new Error((err as Error).message)
     }
   }
 }
 
-export default new UsersRepository(MysqlDatabase.getInstance(), usersModel);
-
+export default new UsersRepository(MysqlDatabase.getInstance(), usersModel)
