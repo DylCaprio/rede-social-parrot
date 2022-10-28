@@ -9,7 +9,14 @@ export default {
         "createdAt": new Date(),
         "updatedAt": new Date(),
         "iduser": "1",
-      }      
+      },
+      {
+        "idpost": 2,
+        "content": "Condomínio esquisito demais kk",
+        "createdAt": new Date(),
+        "updatedAt": new Date(),
+        "iduser": "2",
+      }  
     ]);
   },
   down: (queryInterface: Sequelize.QueryInterface) => {
