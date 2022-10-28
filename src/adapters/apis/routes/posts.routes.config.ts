@@ -23,6 +23,8 @@ export class PostsRoutes extends CommonRoutesConfig {
       .get(postsController.getPostById)
       .put(postsMiddleware.validateRequiredPostBodyFields, postsController.updatePost)
       .delete(postsMiddleware.validatePostExists, postsController.removePost)
+    
+    this.app.route(`/posts/users/:iduser`).all(authMiddleware.checkAuth).get(postsController.listPostsByIdUser)
 
     this.app.use(authMiddleware.validateError)
     

@@ -4,6 +4,7 @@ import readPostUsecase from "../../../domain/usecases/posts/read.post.usecase"
 import updatePostUsecase from "../../../domain/usecases/posts/update.post.usecase"
 import deletePostUsecase from "../../../domain/usecases/posts/delete.post.usecase"
 import listPostUsecase from "../../../domain/usecases/posts/list.post.usecase"
+import listPostByUserPostUsecase from "../../../domain/usecases/posts/listPostByUser.post.usecase"
 import debug from "debug"
 
 const log: debug.IDebugger = debug("app:posts-controller")
@@ -45,10 +46,12 @@ class PostsController {
     res.status(204).send()
   }
 
-  // async postByUser(req: express.Request, res: express.Response) {
-  //   const post = await readPostByUser.execute(req.body)
-  //   res.status(200).send(post)
-  // }
+  async listPostsByIdUser(req: express.Request, res: express.Response) {
+    const posts = await listPostByUserPostUsecase.execute({
+      iduser: Number(req.params.iduser)
+    })
+    res.status(200).send(posts)
+  }
 }
 
 export default new PostsController()

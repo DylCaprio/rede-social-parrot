@@ -7,6 +7,7 @@ import { IPostsRepository } from "../../domain/repositories/posts.repository.int
 import postsModel from "../../infrastructure/persistence/mysql/models/posts.models.mysql.database"
 import modelToEntityPostsMysql from "../../infrastructure/persistence/mysql/helpers/posts/modelToEntity.posts.mysql"
 import entityToModelPostsMysql from "../../infrastructure/persistence/mysql/helpers/posts/entityToModel.posts.mysql"
+import logger from "../../infrastructure/logs/winston.logs"
 
 export class PostsRepository implements IPostsRepository {
   constructor(private _database: IDatabaseModel, private _modelPosts: Sequelize.ModelCtor<Sequelize.Model<any, any>>) {}
@@ -44,25 +45,25 @@ export class PostsRepository implements IPostsRepository {
     return resource
   }
 
-  async postsByIdUser(iduser: string): Promise<{
-    iduser: string
-    idpost: Number
-    content: string
-  }> {
-    const postByIdUser = await this._database.selectQuery(`SELECT * from posts WHERE iduser = :iduser`, {
-      iduser,
-    })
+  // async postsByIdUser(iduser: string): Promise<{
+  //   iduser: string
+  //   idpost: Number
+  //   content: string
+  // }> {
+  //   const postByIdUser = await this._database.selectQuery(`SELECT * from posts WHERE iduser = :iduser`, {
+  //     iduser,
+  //   })
 
-    if (postByIdUser[1].UserId) {
-      return postByIdUser[1] //FIXME 1 ou 0?
-    } else {
-      return {
-        idpost: 0,
-        iduser: iduser,
-        content: "",
-      }
-    }
-  }
+  //   if (postByIdUser[1].UserId) {
+  //     return postByIdUser[1] //FIXME 1 ou 0?
+  //   } else {
+  //     return {
+  //       idpost: 0,
+  //       iduser: iduser,
+  //       content: "",
+  //     }
+  //   }
+  // }
   async readByWhere(iduser: string): Promise<IPostEntity | undefined> {
     try {
       const post = await this._database.readByWhere(this._modelPosts, {
@@ -71,6 +72,18 @@ export class PostsRepository implements IPostsRepository {
 
       return modelToEntityPostsMysql(post)
     } catch (err) {
+      throw new Error((err as Error).message)
+    }
+  }
+
+  async listByIdUser(resourceId: number): Promise<IPostEntity[] | undefined> {
+    try {
+      const posts = await this._database.listByWhere(this._modelPosts, {
+        iduser : resourceId
+      })
+      return posts
+    } catch (err) {
+      logger.error('Erro ao listar posts por usuário:', err)
       throw new Error((err as Error).message)
     }
   }

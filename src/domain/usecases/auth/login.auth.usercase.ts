@@ -34,6 +34,6 @@ export class LoginAuthUseCase implements IUseCase {
     return
   }
 
-} //FIXME
+}
 
 export default new LoginAuthUseCase(UsersRepository)

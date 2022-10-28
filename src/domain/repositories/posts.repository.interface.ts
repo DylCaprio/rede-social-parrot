@@ -6,5 +6,5 @@ export interface IPostsRepository {
   deleteById(resourceId: number): Promise<void>
   list(): Promise<IPostEntity[]>
   updateById(resource: IPostEntity): Promise<IPostEntity | undefined>
-  //FIXME readByWhere(user: string): Promise<IPostEntity | undefined>
+  listByIdUser(resourceId: number): Promise<IPostEntity[] | undefined>
 }
