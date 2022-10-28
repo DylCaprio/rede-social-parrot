@@ -73,13 +73,6 @@ export class MysqlDatabase implements IDatabaseModel {
     })
   }
 
-  // async selectQuery(sql: string, replacements?: Sequelize.BindOrReplacements) {
-  //   return await this._adapter.query(sql, {
-  //     type: Sequelize.QueryTypes.SELECT,
-  //     replacements: replacements,
-  //   })
-  // } //FIXME
-
   readByWhere(model: Sequelize.ModelCtor<Sequelize.Model<any, any>>, dataWhere: Sequelize.WhereOptions<any>): any {
     try {
       return model.findOne({

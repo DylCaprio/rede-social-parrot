@@ -9,7 +9,7 @@ export default MysqlDatabase.getInstance().createModel("posts", {
   },
   iduser: {
     type: Sequelize.DataTypes.INTEGER,
-    field: "iduser" //FIXME
+    field: "iduser"
   },
   content: Sequelize.DataTypes.TEXT,
 });

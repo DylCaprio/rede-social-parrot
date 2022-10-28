@@ -45,25 +45,6 @@ export class PostsRepository implements IPostsRepository {
     return resource
   }
 
-  // async postsByIdUser(iduser: string): Promise<{
-  //   iduser: string
-  //   idpost: Number
-  //   content: string
-  // }> {
-  //   const postByIdUser = await this._database.selectQuery(`SELECT * from posts WHERE iduser = :iduser`, {
-  //     iduser,
-  //   })
-
-  //   if (postByIdUser[1].UserId) {
-  //     return postByIdUser[1] //FIXME 1 ou 0?
-  //   } else {
-  //     return {
-  //       idpost: 0,
-  //       iduser: iduser,
-  //       content: "",
-  //     }
-  //   }
-  // }
   async readByWhere(iduser: string): Promise<IPostEntity | undefined> {
     try {
       const post = await this._database.readByWhere(this._modelPosts, {
